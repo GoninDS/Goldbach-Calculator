@@ -1,0 +1,64 @@
+// Pseudo for number_container
+// Base for number_container.c
+
+// Initialize the memory
+procedure init ()
+  number := 0 // Base case
+  sum_total := 0 // Manages amount of sums
+  is_even := 1 // 0 is an even number
+  is_valid := 1
+  see_sums := 0;
+  size_used := 0
+  memory_size := 0
+  sums as array of unsigned integers
+end procedure
+
+procedure set_number (inserted_number) 
+  number := inserted_number
+  is_even := 1 // Set even as base case
+  if (number is in allowed range)
+    is_valid := 1
+    if (number can not be divided by 2)
+      is_even := 0
+    end if
+  end if
+end procedure
+
+procedure get_number () 
+  return number
+end procedure
+
+procedure destroy ()
+  Release memory consumed by sums
+  clear()
+end procedure
+
+procedure clear ()
+  number := 0 // Base case
+  sum_total := 0 // Manages amount of sums
+  is_even := 1 // 0 is an even number
+  is_valid := 1
+  size_used := 0
+  memory_size := 0
+end procedure
+
+procedure increment_total ()
+  sum_total := sum_total + 1
+end procedure
+
+procedure insert(number)
+  if (size_used <= memory_size)
+    // If there is space, insert the data
+    sums[size_used-1] = number
+  end if
+  else
+    memory_increase()
+    sums[size_used-1] = number
+  end else
+
+  procedure memory_increase()
+  // If called, more space is needed
+  sums as a new array with 10 times more memory
+  // Old data must be saved instead of lost
+  copy data from old to new sums
+end procedure

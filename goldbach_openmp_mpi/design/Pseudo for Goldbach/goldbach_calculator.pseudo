@@ -1,0 +1,84 @@
+procedure obtain_numbers(number_array of number_container) 
+  number := 0
+  while continue_read do
+    read number
+    insert(number)  // Inserte en number_array
+    read continue_read
+  end while
+end procedure
+
+procedure setup_primes(number_array of number_container, prime_container, elements)
+  // Encuentre el num más alto en number_array
+  // Con esto se van a generar los primos
+  highest_number := number_array[0]
+  for index := 0 to elements do 
+    if (number_array[index] > highest_number)
+      highest_number = number_array[index]
+    endif
+  end for 
+
+  // Se utiliza el Sieve of Atkin para calcular primos
+  calculate_primes(prime_container, highest_number)
+end procedure
+
+procedure calculate_number(current_goldbach, primes)
+  current_number = current_goldbach.get_number()
+  if current_number > 5
+    if current_number is even
+      even_case(current_goldbach, primes)
+    end if
+    else 
+      odd_case(current_goldbach, primes)
+    end else 
+  end if
+  else
+    if current_number != 4
+      current_goldbach is not valid
+    end if
+    else
+      even_case(current_goldbach, primes)
+    end else
+  end else
+end procedure
+
+procedure even_case(current_number, primes)
+  sum := 0
+  for first_index := 0 to amount of primes do number
+    for second_index := first_index to amount of primes do
+      sum = primes[first_index] + primes[second_index]
+      if sum <= current_number
+        if sum >= current_number
+          current_number.insert(primes[first_index])
+          current_numeber.insert(primes[second_index])
+        end if
+      end if 
+      else 
+        second_index := amount of primes
+        // Para salirse del for, se puede implementar con un break
+      end else
+    end for
+  end for
+end procedure 
+
+procedure odd_case(current_number, primes)
+  sum := 0
+  for first_index := 0 to amount of primes do
+    for second_index := first_index to amount of primes do
+      for third_index := second_index to amount of primes do
+        sum := primes[first_index] + primes[second_index] + primes[third_index]
+        if sum <= current_number
+          if sum >= current_number
+            current_number.insert(primes[first_index])
+            current_numeber.insert(primes[second_index])
+            current_number.insert(primes[third_index])
+          end if
+          // Do nothing if not 
+        end if
+        else 
+          third_index := amount of primes
+          // Usado para salirse
+        end else
+      end for
+    end for
+  end for
+end procedure

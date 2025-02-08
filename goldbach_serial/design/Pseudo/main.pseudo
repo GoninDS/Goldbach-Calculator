@@ -1,0 +1,7 @@
+procedure main
+  numbers_array as a dynamic array of number_container
+  primes_array as a dynamic array of prime_container   
+  obtain_numbers(numbers_array)
+  setup_primes(numbers_array, primes_array)
+  calculate_sums(numbers_array, primes_array)
+end procedure

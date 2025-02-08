@@ -1,0 +1,74 @@
+structure shared_data
+  contains numbers_array
+  contains primes_array 
+  contains thread_count
+  contains processed_numbers
+  contains mutex
+
+procedure setup_threads(thread_count, numbers_array, primes_array)
+  create shared_data for threads
+  save numbers_array in shared_data
+  save primes_array in shared_data
+  // Si hay menos threads que los números, entonces hay que utilizar control
+  // de concurrencia para trabajar los datos
+  if (thread_count < numbers_array size) 
+    less_threads(thread_count, shared_data)
+  end if
+  else
+    if (thread_count > numbers_array size)
+        // Si hay más threads pedidos que los datos,
+        // no se quieren crear threads innecesarios
+        more_threads(thread_count, shared_data)
+    end if
+    else
+        // Si hay igual cantidad de threads, solo se quiere crear la cantidad dada
+        equal_threads(thread_count, shared_data)
+    end else
+  end else
+
+  join_threads()
+end procedure
+
+procedure less_threads(thread_count, shared_data)
+  for index := 0 to thread_count do
+    create_thread(calculate_less, shared_data, index)
+  end for
+end procedure
+
+procedure more_threads(thread_count, shared_data)
+  for index := 0 to shared_data numbers_array size do 
+    create_thread(equal, shared_data, index)  
+  end for
+end procedure
+
+procedure equal_threads(thread_count, shared_data)
+  for index := 0 to thread_count do
+    create_thread(equal, shared_data, index)    
+  end for
+end procedure
+
+// La cantidad de threads creados es equivalente a la cantidad
+// de datos insertados, todos los threads se encuentran con su dato
+procedure equal(shared_data, my_index)
+  calculate_number(shared_data[my_index])
+end procedure
+
+// Los threads tienen que ir por más de un dato, cuando terminen uno
+// Si pueden procesar otro deben ir a procesarlo
+procedure less(shared_data, first_index)
+  my_index = first_index
+  while true do 
+    calculate_number(shared_data[my_index])
+
+    lock // El mutex se encuentra en shared_data
+      if (processed_numbers < shared_data number_array size)
+        ++processed_numbers
+        my_index = processed_numbers
+      end if
+      else
+        unlock // Si no se desbloquea, crea problemas
+        break
+      end else
+    unlock
+  end while  
+end procedure

@@ -1,0 +1,10 @@
+procedure main (thread_count)
+  numbers_array as a dynamic array of number_container
+  primes_array as a dynamic array of prime_container   
+  obtain_numbers(numbers_array)
+  setup_primes(numbers_array, primes_array)
+  // Una vez todo esté acomodado, se inicia el paralelismo para trabajar por separado
+  // Dependiendo de la cantidad de datos y de threads create_threads toma diferentes procesos
+  // Cada thread calcula sus sumas
+  setup_threads(thread_count, numbers_array, primes_array)
+end procedure

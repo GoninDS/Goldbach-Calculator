@@ -1,0 +1,35 @@
+// Pseudo para dynamic array
+// Base para prime_container.c y numbers_array.c
+
+// Inicialice la memoria
+procedure init()
+  size_used := 0
+  memory_size := 0
+  // Hecho de manera generica ya que es para varios tipos de datos
+  container as array of desired data type
+end procedure
+
+procedure destroy()
+  free memory in charge of container
+end procedure
+
+procedure insert(data)
+  if (size_used <= memory_size)
+    // Si hay espacio, inserte datos
+    container[size_used-1] = data
+  end if
+  else
+    memory_increase()
+    containter[size_used-1] = data
+  end else
+
+  Increment size_used by 1
+end procedure
+
+procedure memory_increase()
+  // Si es llamado, se ocupa más espacio
+  container as a new array with 10 times more memory
+  // Debe copiarse los datos
+  copy data from old to new container
+  free old container
+end procedure

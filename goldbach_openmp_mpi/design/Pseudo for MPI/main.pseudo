@@ -1,0 +1,74 @@
+
+procedure main()
+  read process_number
+  numbers_array as a dynamic array of number_container
+  if process_number == 0 do
+    obtain_numbers(numbers_array)
+    read procedure_amount
+    distribute_numbers(numbers_array, procedure_amount)
+    receive_results(numbers_array)
+    show_results(numbers_array)
+  end if
+  else do
+    bool can_receive := true
+    while (receive can_receive from procedure 0) do
+      receive index from procedure 0
+      receive number from procedure 0
+      insert number with index in numbers_array
+    end while
+    prime_container as a dynamic boolean bit array
+    setup_primes(numbers_array, prime_container)
+    setup_threads(thread_count, numbers_array, prime_container)
+    send_results(numbers_array, process_number)
+
+    delete prime_container
+  end else
+
+  delete numbers_array
+end procedure
+
+procedure distribute_numbers(numbers_array, procedure_amount)
+  number_amount := amount of numbers in numbers_array
+  // Procedure amount is decreased because procedure 0 is not used for this purpose
+  --procedure_amount
+  for procedure := 0 to procedure_amount - 1 do
+    start := procedure * (div(number_amount, procedure_amount)) + min (procedure, mod (number_amount, procedure_amount))
+    end := (procedure + 1) * (div(number_amount, procedure_amount)) + min (procedure + 1, mod (number_amount, procedure_amount))
+    for index := start to end - 1 do
+      // Used to indicate that it needs another number
+      send true to procedure + 1
+      // Used to indicate where this number goes in the array
+      send index to procedure + 1
+      // Used to send the number itself
+      send numbers_array[index] to procedure + 1
+    end for
+    // No more numbers need to be received
+    send false to procedure + 1
+  end for
+end procedure
+
+procedure receive_results(numbers_array)
+  number_amount := amount of numbers in numbers_array
+  for counter := 0 to number_amount - 1 do
+    // Receive all results from any_procedure
+    receive procedure_number from any_procedure
+    receive index from procedure_number
+    receive results_array from procedure_number
+    receive sum_count from procedure_number
+    receive total_elements procedure_number
+    // Move al received information into numbers array
+    move into numbers_array[index]
+  end for
+end procedure
+
+procedure send_results(numbers_array, process_number)
+  number_amount := amount of numbers in numbers_array
+  for counter := 0 to number_amount - 1 do
+    // Send all results from any_procedure to 0
+    send process_number to 0
+    send numbers_array[counter].index to 0
+    send numbers_array[counter].sums to 0
+    send numbers_array[counter].sum_count to 0
+    send numbers_array[counter].size to 0
+  end for
+end procedure
